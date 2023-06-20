@@ -16,6 +16,7 @@ namespace DynamicPlanning{
                 : distmap_obj(_distmap_obj), mission(_mission), param(_param) {}
 
         Box expandBoxFromPoint(const octomap::point3d& point, const octomap::point3d& goal_point, double agent_radius) {
+            
             // Initialize initial_box
             std::vector<double> initial_box;
             initial_box.resize(6);
