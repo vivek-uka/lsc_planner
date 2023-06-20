@@ -3,18 +3,18 @@
 <launch>
 <!-- Parameters -->
   <!-- Mission -->
-  <arg name="mission" default="empty" />
+  <arg name="mission" default="room" />
   <arg name="experiment" default="false" />
   <arg name="patrol" default="false"/>
 
   <!-- Map -->
-  <arg name="use_octomap" default="false"/>
+  <arg name="use_octomap" default="true"/>
   <arg name="world_frame_id" default="world"/>
-  <arg name="world_file_name" default="maze.bt"/>
+  <arg name="world_file_name" default="room.bt"/>
   <arg name="world_resolution" default="0.1"/>
 
   <!-- Visualization   -->
-  <arg name="rviz" default="false" />
+  <arg name="rviz" default="true" />
   <arg name="log" default="false" />
 
   <!-- Save result -->
@@ -69,7 +69,7 @@
 
     <!-- Trajectory representation -->
     <param name="traj/dt" value="0.2" />
-    <param name="traj/horizon" value="1.0" />
+    <param name="traj/horizon" value="2.0" />
     <param name="traj/n" value="5" />
     <param name="traj/phi" value="3" />
     <param name="traj/phi_n" value="1" />
@@ -96,10 +96,10 @@
 
     <!-- Grid-based planner   -->
     <param name="grid/resolution" value="0.3" />
-    <param name="grid/margin" value="0.15" />
+    <param name="grid/margin" value="0.1" />
 
     <!-- Goal -->
-    <param name="plan/goal_threshold" value="0.1" />
+    <param name="plan/goal_threshold" value="0.2" />
     <param name="plan/goal_radius" value="2.0" />
     <param name="plan/priority_dist_threshold" value="0.4" />
 
@@ -107,6 +107,17 @@
     <param name="debug/stop_seq" value="-1" />
   </node>
 
+  <node pkg="octomap_server" type="octomap_server_node" name="octomap_server"
+        args="$(find lsc_planner)/world/$(arg world_file_name)" if="$(arg use_octomap)">
+    <param name="resolution"                 value="$(arg world_resolution)" />
+    <param name="frame_id"                   value="$(arg world_frame_id)" type="string"/>
+    <param name="sensor_model/max_range"     value="5.0" />
+    <param name="height_map"                 value="false"/>
+    <param name="color/r"                    value="0.2" />
+    <param name="color/g"                    value="0.2" />
+    <param name="color/b"                    value="0.2" />
+    <param name="color/a"                    value="0.2" />
+  </node>
   <node pkg="rviz" type="rviz" name="rviz"
         args="-d $(find lsc_planner)/launch/rviz_config/multi_config.rviz" if="$(arg rviz)" />
 </launch>

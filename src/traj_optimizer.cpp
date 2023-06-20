@@ -496,29 +496,59 @@ namespace DynamicPlanning {
                         continue; //Do not adjust constraint at initial state
                     }
                     else if(param.slack_mode == SlackMode::DYNAMICALLIMIT) {
-                        c.add(pow(param.dt, -2) * n * (n - 1) *
-                              (x[k * offset_dim + m * offset_seg + i + 2] -
-                               2 * x[k * offset_dim + m * offset_seg + i + 1] +
-                               x[k * offset_dim + m * offset_seg + i]) +
-                               x[offset_slack + M + m] <=
-                              agent.max_acc[k]);
-                        c.add(-pow(param.dt, -2) * n * (n - 1) *
-                              (x[k * offset_dim + m * offset_seg + i + 2] -
-                               2 * x[k * offset_dim + m * offset_seg + i + 1] +
-                               x[k * offset_dim + m * offset_seg + i]) +
-                               x[offset_slack + M + m] <=
-                              agent.max_acc[k]);
+                        if(k != 2){
+                            c.add(pow(param.dt, -2) * n * (n - 1) *
+                                (x[k * offset_dim + m * offset_seg + i + 2] -
+                                2 * x[k * offset_dim + m * offset_seg + i + 1] +
+                                x[k * offset_dim + m * offset_seg + i]) +
+                                x[offset_slack + M + m] <=
+                                agent.max_acc[k]);
+                            c.add(-pow(param.dt, -2) * n * (n - 1) *
+                                (x[k * offset_dim + m * offset_seg + i + 2] -
+                                2 * x[k * offset_dim + m * offset_seg + i + 1] +
+                                x[k * offset_dim + m * offset_seg + i]) +
+                                x[offset_slack + M + m] <=
+                                agent.max_acc[k]);
+                        }
+                        else{
+                            c.add(pow(param.dt, -2) * n * (n - 1) *
+                                (x[k * offset_dim + m * offset_seg + i + 2] -
+                                2 * x[k * offset_dim + m * offset_seg + i + 1] +
+                                x[k * offset_dim + m * offset_seg + i]) +
+                                x[offset_slack + M + m] <=
+                                agent.max_acc[0]);
+                            c.add(pow(param.dt, -2) * n * (n - 1) *
+                                (x[k * offset_dim + m * offset_seg + i + 2] -
+                                2 * x[k * offset_dim + m * offset_seg + i + 1] +
+                                x[k * offset_dim + m * offset_seg + i]) +
+                                x[offset_slack + M + m] >=
+                                agent.max_acc[2]);
+                        }
                     } else {
-                        c.add(pow(param.dt, -2) * n * (n - 1) *
-                              (x[k * offset_dim + m * offset_seg + i + 2] -
-                               2 * x[k * offset_dim + m * offset_seg + i + 1] +
-                               x[k * offset_dim + m * offset_seg + i]) <=
-                              agent.max_acc[k]);
-                        c.add(-pow(param.dt, -2) * n * (n - 1) *
-                              (x[k * offset_dim + m * offset_seg + i + 2] -
-                               2 * x[k * offset_dim + m * offset_seg + i + 1] +
-                               x[k * offset_dim + m * offset_seg + i]) <=
-                               agent.max_acc[k]);
+                        if(k != 2){
+                            c.add(pow(param.dt, -2) * n * (n - 1) *
+                                (x[k * offset_dim + m * offset_seg + i + 2] -
+                                2 * x[k * offset_dim + m * offset_seg + i + 1] +
+                                x[k * offset_dim + m * offset_seg + i]) <=
+                                agent.max_acc[k]);
+                            c.add(-pow(param.dt, -2) * n * (n - 1) *
+                                (x[k * offset_dim + m * offset_seg + i + 2] -
+                                2 * x[k * offset_dim + m * offset_seg + i + 1] +
+                                x[k * offset_dim + m * offset_seg + i]) <=
+                                agent.max_acc[k]);
+                        }
+                        else{
+                            c.add(pow(param.dt, -2) * n * (n - 1) *
+                                (x[k * offset_dim + m * offset_seg + i + 2] -
+                                2 * x[k * offset_dim + m * offset_seg + i + 1] +
+                                x[k * offset_dim + m * offset_seg + i]) <=
+                                agent.max_acc[0]);
+                            c.add(pow(param.dt, -2) * n * (n - 1) *
+                                (x[k * offset_dim + m * offset_seg + i + 2] -
+                                2 * x[k * offset_dim + m * offset_seg + i + 1] +
+                                x[k * offset_dim + m * offset_seg + i]) >=
+                                agent.max_acc[2]);
+                        }
                     }
                 }
             }

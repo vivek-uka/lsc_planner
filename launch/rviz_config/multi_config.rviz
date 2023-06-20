@@ -10,6 +10,7 @@ Panels:
         - /StartGoal1/Namespaces1
         - /CollisionAlert1
         - /CmdFullState1/Namespaces1
+        - /CollisionConstraint1
         - /CollisionConstraint1/Namespaces1
       Splitter Ratio: 0.5056179761886597
     Tree Height: 796
@@ -210,12 +211,6 @@ Visualization Manager:
       Namespaces:
         0: true
         1: true
-        10: true
-        11: true
-        12: true
-        13: true
-        14: true
-        15: true
         2: true
         3: true
         4: true
@@ -320,25 +315,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/XYOrbit
-      Distance: 13.221490859985352
+      Distance: 18.258237838745117
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 2.324782371520996
-        Y: 0.0878131240606308
+        X: 3.662205219268799
+        Y: 2.788337469100952
         Z: 9.536699963064166e-7
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.5697963237762451
+      Pitch: 1.544796347618103
       Target Frame: <Fixed Frame>
       Value: XYOrbit (rviz)
-      Yaw: 0
+      Yaw: 0.034999996423721313
     Saved: ~
 Window Geometry:
   Displays:
@@ -358,5 +353,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1853
-  X: 1987
+  X: 67
   Y: 27

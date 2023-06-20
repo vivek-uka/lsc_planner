@@ -42,7 +42,7 @@
     <!-- Multisim setting -->
     <param name="multisim/planning_rate" value="-1"/> <!-- Delay between iteration, if planning_rate is -1, then no delay -->
     <param name="multisim/qn" value="2" /> <!-- The number of agents when the agents is empty in the mission file -->
-    <param name="multisim/time_step" value="0.2" /> <!-- Replanning period, if you use LSC planner then it must be equal to traj/dt -->
+    <param name="multisim/time_step" value="0.1" /> <!-- Replanning period, if you use LSC planner then it must be equal to traj/dt -->
     <param name="multisim/patrol" value="$(arg patrol)"/>
     <param name="multisim/max_noise" value="0.02" /> <!-- If it is larger than 0, then it adds some noise to start and goal point -->
     <param name="multisim/max_planner_iteration" value="1000" /> <!-- Maximum iteration of the planner -->
@@ -57,7 +57,7 @@
     <param name="mode/goal" value="prior_based" /> <!-- right_hand: use right hand rule, prior_based: use priority-based goal planning -->
 
     <!-- Trajectory representation -->
-    <param name="traj/dt" value="0.2" /> <!-- Segment time, if you use LSC planner then it must be equal to multisim/time_step -->
+    <param name="traj/dt" value="0.1" /> <!-- Segment time, if you use LSC planner then it must be equal to multisim/time_step -->
     <param name="traj/horizon" value="3.0" /> <!-- Planning horizon, M = horizon / dt -->
     <param name="traj/n" value="5" /> <!-- Degree of polynomial, only 5 is available now -->
     <param name="traj/phi" value="3" /> <!-- 3: Minimize Jerk, only 3 is available now -->
@@ -84,7 +84,7 @@
     <param name="orca/inflation_ratio" value="1.0" />
 
     <!-- Grid-based planner   -->
-    <param name="grid/resolution" value="0.25" /> <!-- Resolution of the grid, if it is too big, then it can not find path to the goal, if it is too small then computation time will be increased -->
+    <param name="grid/resolution" value="0.1" /> <!-- Resolution of the grid, if it is too big, then it can not find path to the goal, if it is too small then computation time will be increased -->
     <param name="grid/margin" value="0.1" /> <!-- For each grid point, grid_point is not occupied if dist_to_obs > agent_radius + grid_margin -->
 
     <!-- Goal -->
