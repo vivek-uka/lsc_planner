@@ -58,7 +58,7 @@
 
     <!-- Trajectory representation -->
     <param name="traj/dt" value="0.2" /> <!-- Segment time, if you use LSC planner then it must be equal to multisim/time_step -->
-    <param name="traj/horizon" value="1.0" /> <!-- Planning horizon, M = horizon / dt -->
+    <param name="traj/horizon" value="3.0" /> <!-- Planning horizon, M = horizon / dt -->
     <param name="traj/n" value="5" /> <!-- Degree of polynomial, only 5 is available now -->
     <param name="traj/phi" value="3" /> <!-- 3: Minimize Jerk, only 3 is available now -->
     <param name="traj/phi_n" value="1" /> <!-- 1: Minimize Jerk, only 1 is available now -->
@@ -84,7 +84,7 @@
     <param name="orca/inflation_ratio" value="1.0" />
 
     <!-- Grid-based planner   -->
-    <param name="grid/resolution" value="0.1" /> <!-- Resolution of the grid, if it is too big, then it can not find path to the goal, if it is too small then computation time will be increased -->
+    <param name="grid/resolution" value="0.25" /> <!-- Resolution of the grid, if it is too big, then it can not find path to the goal, if it is too small then computation time will be increased -->
     <param name="grid/margin" value="0.1" /> <!-- For each grid point, grid_point is not occupied if dist_to_obs > agent_radius + grid_margin -->
 
     <!-- Goal -->
