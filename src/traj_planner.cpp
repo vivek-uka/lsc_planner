@@ -588,6 +588,7 @@ namespace DynamicPlanning{
 
         // A* considering priority
         GridBasedPlanner grid_based_planner(distmap_obj, mission, param);
+        grid_based_planner.octree_ptr = octree_ptr;
         grid_path = grid_based_planner.plan(agent.current_state.position, agent.desired_goal_position,
                                             agent.id, agent.radius, agent.downwash,
                                             obstacles, high_priority_obstacle_ids);
@@ -599,7 +600,7 @@ namespace DynamicPlanning{
         }
 
         // Find los-free goal from end of the initial trajectory
-        grid_los_goal = grid_based_planner.findLOSFreeGoal(initial_traj[M-1][n],
+        grid_los_goal = grid_based_planner.findLOSFreeGoal(agent.current_state.position,//initial_traj[M-1][n],
                                                            agent.desired_goal_position,
                                                            obstacles,
                                                            agent.radius);
@@ -1451,14 +1452,19 @@ namespace DynamicPlanning{
     void TrajPlanner::generateFeasibleSFC(){
         CorridorConstructor corridor_constructor(distmap_obj, mission, param);
 
-        if(flag_initialize_sfc){
+        // if(agent.current_state.velocity.norm() < param.deadlock_velocity_threshold)
+        //     agent.cnt_initialize_sfc++;
+        // else
+        //     agent.cnt_initialize_sfc = 0;
+
+        if(flag_initialize_sfc || agent.cnt_initialize_sfc > 5){
             Box box = corridor_constructor.expandBoxFromPoint(agent.current_state.position,
                                                               agent.current_goal_position,
                                                               agent.radius);
             for(int m = 0; m < M; m++){
                 constraints.setSFC(m, box);
             }
-
+            agent.cnt_initialize_sfc = 0;
             flag_initialize_sfc = false;
         }
         else {
@@ -1472,7 +1478,7 @@ namespace DynamicPlanning{
             box_cand = corridor_constructor.expandBoxFromPoint(traj_curr[M - 1][n],
                                                                agent.current_goal_position,
                                                                agent.radius);
-
+            
             //TODO: Note: Below code may cause infeasible optimization problem because the function
             //      "corridor_constructor.expandBoxFromPoint" does not guarantee that
             //      traj_curr[M - 1][n] is belong to box_cand due to the numerical error of dynamicEDT3D library.

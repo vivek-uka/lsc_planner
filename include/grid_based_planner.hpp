@@ -79,6 +79,7 @@ namespace DynamicPlanning {
 
     class GridBasedPlanner {
     public:
+        octomap::OcTree* octree_ptr;
         GridBasedPlanner(const std::shared_ptr<DynamicEDTOctomap>& _distmap_obj,
                          const DynamicPlanning::Mission &_mission,
                          const DynamicPlanning::Param &_param);
@@ -105,7 +106,7 @@ namespace DynamicPlanning {
         Mission mission;
         Param param;
         std::shared_ptr<DynamicEDTOctomap> distmap_obj;
-
+        
         GridInfo grid_info{};
         GridMap grid_map;
         GridMission grid_mission;

@@ -35,7 +35,9 @@ namespace DynamicPlanning{
 
             if (isObstacleInBox(initial_box, agent_radius)) {
                 bool debug = isObstacleInBox(initial_box, agent_radius);
-                throw std::invalid_argument("[CorridorConstructor] Invalid line segment. Obstacle invades line segment.");
+                mission.stop_mission = true;
+                ROS_WARN_STREAM("[CorridorConstructor] Invalid line segment. Obstacle invades line segment.");
+                // throw std::invalid_argument("[CorridorConstructor] Invalid line segment. Obstacle invades line segment.");
             }
 
             Box box;

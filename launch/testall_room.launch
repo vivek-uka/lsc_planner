@@ -42,7 +42,7 @@
     <!-- Multisim setting -->
     <param name="multisim/planning_rate" value="-1"/>
     <param name="multisim/qn" value="2" />
-    <param name="multisim/time_step" value="0.05" />
+    <param name="multisim/time_step" value="0.2" />
     <param name="multisim/patrol" value="$(arg patrol)"/>
     <param name="multisim/max_noise" value="0.0" />
     <param name="multisim/max_planner_iteration" value="300" />
@@ -63,7 +63,7 @@
     <param name="obs/agent_clustering" value="false" />
 
     <!-- Trajectory representation -->
-    <param name="traj/dt" value="0.05" />
+    <param name="traj/dt" value="0.2" />
     <param name="traj/horizon" value="1.0" />
     <param name="traj/n" value="5" />
     <param name="traj/phi" value="3" />
@@ -90,8 +90,8 @@
     <param name="orca/inflation_ratio" value="1.0" />
 
     <!-- Grid-based planner   -->
-    <param name="grid/resolution" value="0.25" />
-    <param name="grid/margin" value="0.1" />
+    <param name="grid/resolution" value="0.15" />
+    <param name="grid/margin" value="0.2" />
 
     <!-- Goal -->
     <param name="plan/goal_threshold" value="0.1" />

@@ -55,6 +55,7 @@ namespace DynamicPlanning {
 
         const Param param;
         Mission mission;
+        octomap::OcTree* octree_ptr;
         std::shared_ptr<DynamicEDTOctomap> distmap_obj;
         std::vector<std::unique_ptr<TrajPlanner>> agents;
         ObstacleGenerator obstacle_generator;

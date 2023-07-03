@@ -48,7 +48,7 @@ namespace DynamicPlanning {
     GridBasedPlanner::GridBasedPlanner(const std::shared_ptr<DynamicEDTOctomap>& _distmap_obj,
                                        const DynamicPlanning::Mission &_mission,
                                        const DynamicPlanning::Param &_param)
-                                       : distmap_obj(_distmap_obj), mission(_mission), param(_param) {}
+                                       : distmap_obj(_distmap_obj), mission(_mission), param(_param){}
 
     path_t GridBasedPlanner::plan(const octomap::point3d& current_position,
                                   const octomap::point3d& goal_position,
@@ -316,6 +316,7 @@ namespace DynamicPlanning {
             point = octomap::point3d(grid_info.grid_min[0] + grid_vector[0] * grid_resolution,
                                      grid_info.grid_min[1] + grid_vector[1] * grid_resolution,
                                      param.world_z_2d);
+            
         }
         else {
             point = octomap::point3d(grid_info.grid_min[0] + grid_vector[0] * grid_resolution,
@@ -352,51 +353,123 @@ namespace DynamicPlanning {
                                                        const std::vector<dynamic_msgs::Obstacle>& obstacles,
                                                        double agent_radius,
                                                        const std::vector<octomap::point3d>& additional_check_positions) {
+        
         octomap::point3d los_free_goal = current_position;
-
+        
         path_t path = plan_result.path;
         path.emplace_back(goal_position);
 
         std::vector<octomap::point3d> start_positions = additional_check_positions;
         start_positions.emplace_back(current_position);
 
-        for (int i = 0; i < 6; i++) {
-            double margin_ratio = 1.5 - 0.1 * i;
-            for (const auto &point : path) {
-                bool is_safe = true;
-                for (const auto &start_position: start_positions) {
-                    for (const auto &obstacle : obstacles) {
-                        if (obstacle.type == ObstacleType::STATICOBSTACLE) {
-                            if (checkCollisionBetweenLineSegmentAndBox(obstacle,
-                                                                       start_position, point,
-                                                                       agent_radius, param.world_dimension)) {
-                                is_safe = false;
-                                break;
-                            }
-                        }
-                    }
 
-                    if (is_safe and distmap_obj != nullptr) {
-                        is_safe = castRay(start_position, point, agent_radius * margin_ratio);
-                    }
+        for(int i = 0; i < path.size(); i++){
+            bool visible = true;
+            
+            float x1 = current_position.x();
+            float y1 = current_position.y();
+            float z1 = current_position.z();
 
-                    if (not is_safe) {
-                        break;
-                    }
-                }
+            float x2 = (path[i]).x();
+            float y2 = (path[i]).y();
+            float z2 = (path[i]).z();
 
-                if (is_safe) {
-                    los_free_goal = point;
-                }
-                else {
+            float radius_xy = 0.25;
+            float radius_z = 0.25;
+
+            float alpha = atan2(y2-y1, x2-x1);
+            float beta = (x2 == x1) ? M_PI_2 : atan2((x2 - x1)/cos(alpha), z2 - z1);
+            float range = sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2) + pow(z2 - z1, 2));
+            
+            float theta_xy = asin(radius_xy/range);
+            float range_xy_lr = radius_xy/tan(theta_xy);
+
+            float theta_z = asin(radius_z/range);
+            float range_z_up = radius_z/tan(theta_z);
+            
+            if(!isnan(range_xy_lr) && !isnan(range_z_up)){
+                bool success1 = false, success2 = false, success3 = false, success4 = false, 
+                        success5 = false, success6 = false, success7 = false, success8 = false;
+
+                octomap::point3d origin(x1, y1, z1);
+                octomap::point3d direction1(cos(alpha+theta_xy)*sin(beta), sin(alpha+theta_xy)*sin(beta), cos(beta));
+                octomap::point3d direction2(cos(alpha-theta_xy)*sin(beta), sin(alpha-theta_xy)*sin(beta), cos(beta));
+                octomap::point3d ray_end;    
+                
+                octomap::point3d origin2(x2, y2, z2);
+                octomap::point3d direction3(cos(M_PI+alpha+theta_xy)*sin(beta), sin(M_PI+alpha+theta_xy)*sin(beta), cos(beta));
+                octomap::point3d direction4(cos(M_PI+alpha-theta_xy)*sin(beta), sin(M_PI+alpha-theta_xy)*sin(beta), cos(beta));
+                
+                success1 = octree_ptr->castRay(origin, direction1, ray_end, false, range_xy_lr);
+                success2 = octree_ptr->castRay(origin, direction2, ray_end, false, range_xy_lr);
+                success3 = octree_ptr->castRay(origin2, direction3, ray_end, false, range_xy_lr);
+                success4 = octree_ptr->castRay(origin2, direction4, ray_end, false, range_xy_lr);
+               
+                // if(prob_data.world == 3){
+                    octomap::point3d direction5(cos(alpha)*sin(beta+theta_z), sin(alpha)*sin(beta+theta_z), cos(beta+theta_z));
+                    octomap::point3d direction6(cos(alpha)*sin(beta-theta_z), sin(alpha)*sin(beta-theta_z), cos(beta-theta_z));
+                    octomap::point3d direction7(cos(alpha)*sin(M_PI+beta+theta_z), sin(alpha)*sin(M_PI+beta+theta_z), cos(M_PI+beta+theta_z));
+                    octomap::point3d direction8(cos(alpha)*sin(M_PI+beta-theta_z), sin(alpha)*sin(M_PI+beta-theta_z), cos(M_PI+beta-theta_z));
+
+                    success5 = octree_ptr->castRay(origin, direction5, ray_end, false, range_z_up);
+                    success6 = octree_ptr->castRay(origin, direction6, ray_end, false, range_z_up);			
+                    success7 = octree_ptr->castRay(origin2, direction7, ray_end, false, range_z_up);
+                    success8 = octree_ptr->castRay(origin2, direction8, ray_end, false, range_z_up);
+                // }
+              
+                if(success1 || success2 || success3 || success4 || success5 || success6 || success7 || success8){
+                    visible = false;
                     break;
                 }
+               
             }
-
-            if((los_free_goal - current_position).norm() > 0.3){
-                break;
+            else{
+                if(i != path.size() - 1){
+                    continue;
+                }
+            }
+            if(visible){ 
+                los_free_goal = path[i]; 
             }
         }
+        
+        // for (int i = 0; i < 6; i++) {
+        //     double margin_ratio = 1.5 - 0.1 * i;
+        //     for (const auto &point : path) {
+        //         bool is_safe = true;
+        //         for (const auto &start_position: start_positions) {
+        //             for (const auto &obstacle : obstacles) {
+        //                 if (obstacle.type == ObstacleType::STATICOBSTACLE) {
+        //                     if (checkCollisionBetweenLineSegmentAndBox(obstacle,
+        //                                                                start_position, point,
+        //                                                                agent_radius, param.world_dimension)) {
+        //                         is_safe = false;
+        //                         break;
+        //                     }
+        //                 }
+        //             }
+
+        //             if (is_safe and distmap_obj != nullptr) {
+        //                 is_safe = castRay(start_position, point, agent_radius * margin_ratio);
+        //             }
+
+        //             if (not is_safe) {
+        //                 break;
+        //             }
+        //         }
+
+        //         if (is_safe) {
+        //             los_free_goal = point;
+        //         }
+        //         else {
+        //             break;
+        //         }
+        //     }
+
+        //     if((los_free_goal - current_position).norm() > 0.3){
+        //         break;
+        //     }
+        // }
 
         octomap::point3d delta = los_free_goal - current_position;
         if(delta.norm() > param.goal_radius){

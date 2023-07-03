@@ -18,7 +18,7 @@
   <arg name="log" default="false" />
 
   <!-- Save result -->
-  <arg name="save_result_csv" default="true" />
+  <arg name="save_result_csv" default="false" />
   <arg name="save_rviz_msg_rosbag" default="false" />
   <arg name="save_raw_msg_rosbag" default="false" />
 
@@ -64,7 +64,7 @@
 
     <!-- Trajectory representation -->
     <param name="traj/dt" value="0.2" />
-    <param name="traj/horizon" value="3.0" />
+    <param name="traj/horizon" value="1.0" />
     <param name="traj/n" value="5" />
     <param name="traj/phi" value="3" />
     <param name="traj/phi_n" value="1" />
@@ -90,8 +90,8 @@
     <param name="orca/inflation_ratio" value="1.0" />
 
     <!-- Grid-based planner   -->
-    <param name="grid/resolution" value="0.25" />
-    <param name="grid/margin" value="0.15" />
+    <param name="grid/resolution" value="0.2" />
+    <param name="grid/margin" value="0.2" />
 
     <!-- Goal -->
     <param name="plan/goal_threshold" value="0.1" />

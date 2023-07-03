@@ -162,6 +162,7 @@ namespace DynamicPlanning {
         double radius;
         double downwash;
         double nominal_velocity;
+        int cnt_initialize_sfc;
     };
 
     struct ClosestPoints{

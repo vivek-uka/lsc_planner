@@ -28,7 +28,7 @@ namespace DynamicPlanning {
         std::vector<std_msgs::ColorRGBA> color;
         std::string mission_file_name;
         std::string world_file_name;
-
+        bool stop_mission = false;
         Mission();
         static Document readMissionFile(const std::string& file_name) ;
         bool initialize(const std::string& mission_file_name, double max_noise, int world_dimension,

@@ -48,6 +48,7 @@
 namespace DynamicPlanning {
     class TrajPlanner {
     public:
+        octomap::OcTree* octree_ptr;
         TrajPlanner(int _agent_id, const ros::NodeHandle& _nh, const Param& _param, const Mission& _mission);
 
         void initializeROS();
@@ -125,6 +126,7 @@ namespace DynamicPlanning {
         FlagMsg flag_current_state, flag_obstacles;
         FlagDeadlock flag_deadlock;
         bool flag_initialize_sfc;
+       
         PlannerState planner_state;
 
         // Agent

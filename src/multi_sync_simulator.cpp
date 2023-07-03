@@ -95,7 +95,7 @@ namespace DynamicPlanning{
             }
 
             // Check mission finished
-            if (isFinished() or (not param.multisim_experiment and iter == param.multisim_max_planner_iteration - 1)) {
+            if (isFinished() or (not param.multisim_experiment and iter == param.multisim_max_planner_iteration - 1) || mission.stop_mission) {
                 // Save result in csv file
                 summarizeResult();
 
@@ -152,7 +152,7 @@ namespace DynamicPlanning{
 
     void MultiSyncSimulator::setOctomap(std::string file_name){
         float max_dist = 1.0; //TODO: parameterization
-        octomap::OcTree* octree_ptr;
+        // octomap::OcTree* octree_ptr;
         octree_ptr = new octomap::OcTree(param.world_resolution);
         if(!octree_ptr->readBinary(file_name)){
             throw std::invalid_argument("[MultiSyncSimulator] Fail to read octomap file.");
@@ -162,7 +162,7 @@ namespace DynamicPlanning{
                                                           mission.world_min, mission.world_max,
                                                           false);
         distmap_obj->update();
-
+        
         has_distmap = true;
     }
 
@@ -297,7 +297,7 @@ namespace DynamicPlanning{
                 traj_t obs_traj = agents[qj]->getTraj();
                 obs_prev_trajs.emplace_back(obs_traj);
             }
-
+            agents[qi]->octree_ptr = octree_ptr;
             agents[qi]->setDistMap(distmap_obj);
             agents[qi]->setObstacles(msg_obstacles);
             agents[qi]->setObsPrevTrajs(obs_prev_trajs);
@@ -388,10 +388,10 @@ namespace DynamicPlanning{
         ROS_INFO_STREAM("[MultiSyncSimulator] total disance: " << total_distance);
 
         // average planning time
-        ROS_INFO_STREAM("[MultiSyncSimulator] planning time per agent: " << planning_time.total_planning_time.average);
+        ROS_INFO_STREAM("[MultiSyncSimulator] sfc gen + optimization time per agent: " << planning_time.traj_optimization_time.average + planning_time.sfc_generation_time.average);
 
         // safety_ratio_agent
-        ROS_INFO_STREAM("[MultiSyncSimulator] safety ratio between agent: " << safety_ratio_agent);
+        ROS_INFO_STREAM("[MultiSyncSimulator] safety distance between agent: " << safety_ratio_agent*2*0.1);
 
         // safety_ratio_obstacle
 //        ROS_INFO_STREAM("[MultiSyncSimulator] safety ratio obstacle: " << safety_ratio_obs);
@@ -962,6 +962,7 @@ namespace DynamicPlanning{
         }
 
         GridBasedPlanner grid_based_planner(distmap_obj, mission, param);
+        grid_based_planner.octree_ptr = octree_ptr;
         grid_based_planner.plan(mission.agents[0].start_position, mission.agents[0].start_position, 0,
                                 mission.agents[0].radius, mission.agents[0].downwash);
         std::vector<octomap::point3d> free_grid_points = grid_based_planner.getFreeGridPoints();
