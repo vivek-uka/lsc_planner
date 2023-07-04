@@ -64,7 +64,7 @@
 
     <!-- Trajectory representation -->
     <param name="traj/dt" value="0.2" />
-    <param name="traj/horizon" value="3.0" />
+    <param name="traj/horizon" value="1.0" />
     <param name="traj/n" value="5" />
     <param name="traj/phi" value="3" />
     <param name="traj/phi_n" value="1" />
