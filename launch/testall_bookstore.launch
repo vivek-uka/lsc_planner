@@ -3,14 +3,14 @@
 <launch>
 <!-- Parameters -->
   <!-- Mission -->
-  <arg name="mission" default="room" />
+  <arg name="mission" default="bookstore" />
   <arg name="experiment" default="false" />
   <arg name="patrol" default="false"/>
 
   <!-- Map -->
   <arg name="use_octomap" default="true"/>
   <arg name="world_frame_id" default="world"/>
-  <arg name="world_file_name" default="room.bt"/>
+  <arg name="world_file_name" default="bookstore.bt"/>
   <arg name="world_resolution" default="0.1"/>
 
   <!-- Visualization   -->
@@ -64,7 +64,7 @@
 
     <!-- Trajectory representation -->
     <param name="traj/dt" value="0.2" />
-    <param name="traj/horizon" value="3.0" />
+    <param name="traj/horizon" value="1.0" />
     <param name="traj/n" value="5" />
     <param name="traj/phi" value="3" />
     <param name="traj/phi_n" value="1" />

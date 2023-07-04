@@ -95,7 +95,7 @@ namespace DynamicPlanning{
             }
 
             // Check mission finished
-            if (isFinished() or (not param.multisim_experiment and iter == param.multisim_max_planner_iteration - 1) || mission.stop_mission) {
+            if (isFinished() or (not param.multisim_experiment and iter == param.multisim_max_planner_iteration - 1)) {
                 // Save result in csv file
                 summarizeResult();
 
@@ -541,6 +541,9 @@ namespace DynamicPlanning{
         double t = (sim_current_time - sim_start_time).toSec();
         while(future_time < param.multisim_time_step) {
             for (int qi = 0; qi < mission.qn; qi++) {
+                // float acc = sqrt(pow(agents[qi]->getFutureStateMsg(future_time).acceleration.linear.x, 2) 
+                //             + pow(agents[qi]->getFutureStateMsg(future_time).acceleration.linear.y, 2)
+                //             + pow(agents[qi]->getFutureStateMsg(future_time).acceleration.linear.z, 2)); 
                 result_csv << qi << "," << t << ","
                            << agents[qi]->getFutureStateMsg(future_time).pose.position.x << ","
                            << agents[qi]->getFutureStateMsg(future_time).pose.position.y << ","
@@ -550,7 +553,7 @@ namespace DynamicPlanning{
                            << agents[qi]->getFutureStateMsg(future_time).velocity.linear.z << ","
                            << agents[qi]->getFutureStateMsg(future_time).acceleration.linear.x << ","
                            << agents[qi]->getFutureStateMsg(future_time).acceleration.linear.y << ","
-                           << agents[qi]->getFutureStateMsg(future_time).acceleration.linear.z << ","
+                           << agents[qi]->getFutureStateMsg(future_time).acceleration.linear.z << ","       
                            << agents[qi]->getPlanningTime().total_planning_time.current << ","
                            << agents[qi]->getQPCost() << ","
                            << agents[qi]->getPlanningReport() << ","
