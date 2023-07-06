@@ -509,7 +509,25 @@ namespace DynamicPlanning{
     }
 
     void TrajPlanner::goalPlanningWithStaticGoal() {
-        agent.current_goal_position = agent.desired_goal_position;
+        // agent.current_goal_position = agent.desired_goal_position;
+        GridBasedPlanner grid_based_planner(distmap_obj, mission, param);
+        grid_based_planner.octree_ptr = octree_ptr;
+        grid_path = grid_based_planner.plan(agent.current_state.position, agent.desired_goal_position,
+                                            agent.id, agent.radius, agent.downwash);
+        if(grid_path.empty()) {
+            // A* without priority
+            grid_path = grid_based_planner.plan(agent.current_state.position, agent.desired_goal_position,
+                                                agent.id, agent.radius, agent.downwash,
+                                                obstacles);
+        }
+
+        // Find los-free goal from end of the initial trajectory
+        grid_los_goal = grid_based_planner.findLOSFreeGoal(agent.current_state.position,
+                                                           agent.desired_goal_position,
+                                                           obstacles,
+                                                           agent.radius);
+
+        agent.current_goal_position = grid_los_goal;
     }
 
     void TrajPlanner::goalPlanningWithORCA() {
@@ -544,37 +562,37 @@ namespace DynamicPlanning{
         int closest_obs_id = -1;
         double dist_to_goal = (agent.current_state.position - agent.desired_goal_position).norm();
         double min_dist_to_obs = SP_INFINITY;
-        for(int oi = 0; oi < N_obs; oi++){
-            if(obs_slack_indices.find(oi) != obs_slack_indices.end()){
-                high_priority_obstacle_ids.emplace(obstacles[oi].id);
-                continue;
-            }
+        // for(int oi = 0; oi < N_obs; oi++){
+        //     if(obs_slack_indices.find(oi) != obs_slack_indices.end()){
+        //         high_priority_obstacle_ids.emplace(obstacles[oi].id);
+        //         continue;
+        //     }
 
-            if(obstacles[oi].type == ObstacleType::AGENT) {
-                octomap::point3d obs_goal_position = pointMsgToPoint3d(obstacles[oi].goal_point);
-                octomap::point3d obs_curr_position = pointMsgToPoint3d(obstacles[oi].pose.position);
-                double obs_dist_to_goal = (obs_curr_position - obs_goal_position).norm();
-                double dist_to_obs = (obs_curr_position - agent.current_state.position).norm();
+        //     if(obstacles[oi].type == ObstacleType::AGENT) {
+        //         octomap::point3d obs_goal_position = pointMsgToPoint3d(obstacles[oi].goal_point);
+        //         octomap::point3d obs_curr_position = pointMsgToPoint3d(obstacles[oi].pose.position);
+        //         double obs_dist_to_goal = (obs_curr_position - obs_goal_position).norm();
+        //         double dist_to_obs = (obs_curr_position - agent.current_state.position).norm();
 
-                // Do not consider the priority when other agent is near goal.
-                if(obs_dist_to_goal < param.goal_threshold){
-                    continue;
-                }
-                // Do not consider the agents have the same direction
-                if(dist_to_goal > param.goal_threshold and (obs_prev_trajs[oi][M-1][n] - obs_prev_trajs[oi][0][n]).dot(obs_prev_trajs[oi][0][n] - agent.current_state.position) > 0){
-                    continue;
-                }
-                // If the agent is near goal, all other agents have higher priority
-                // Else the agents with smaller dist_to_goal have higher priority
-                if (dist_to_goal < param.goal_threshold or obs_dist_to_goal < dist_to_goal) {
-                    if (dist_to_obs < min_dist_to_obs) {
-                        min_dist_to_obs = dist_to_obs;
-                        closest_obs_id = oi;
-                    }
-                    high_priority_obstacle_ids.emplace(obstacles[oi].id);
-                }
-            }
-        }
+        //         // Do not consider the priority when other agent is near goal.
+        //         if(obs_dist_to_goal < param.goal_threshold){
+        //             continue;
+        //         }
+        //         // Do not consider the agents have the same direction
+        //         if(dist_to_goal > param.goal_threshold and (obs_prev_trajs[oi][M-1][n] - obs_prev_trajs[oi][0][n]).dot(obs_prev_trajs[oi][0][n] - agent.current_state.position) > 0){
+        //             continue;
+        //         }
+        //         // If the agent is near goal, all other agents have higher priority
+        //         // Else the agents with smaller dist_to_goal have higher priority
+        //         if (dist_to_goal < param.goal_threshold or obs_dist_to_goal < dist_to_goal) {
+        //             if (dist_to_obs < min_dist_to_obs) {
+        //                 min_dist_to_obs = dist_to_obs;
+        //                 closest_obs_id = oi;
+        //             }
+        //             high_priority_obstacle_ids.emplace(obstacles[oi].id);
+        //         }
+        //     }
+        // }
 
         // If the distance to a higher priority agent is too short, then move away from that agent.
         double priority_dist_threshold = param.priority_dist_threshold;

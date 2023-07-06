@@ -330,7 +330,7 @@ namespace DynamicPlanning{
         // save planning result
         savePlanningResult();
         if(param.multisim_save_result){
-            savePlanningResultAsCSV();
+            ;// savePlanningResultAsCSV();
         }
 
         return true;

@@ -56,6 +56,9 @@ namespace DynamicPlanning {
         else if(goal_mode_str == "prior_based"){
             goal_mode = GoalMode::PRIORBASED;
         }
+        else if(goal_mode_str == "standard_los"){
+            goal_mode = GoalMode::STATIC;
+        }
 
         // Obstacle prediction
         nh.param<bool>("obs/size_prediction", obs_size_prediction, true);

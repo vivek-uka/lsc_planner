@@ -433,48 +433,10 @@ namespace DynamicPlanning {
             }
         }
         
-        // for (int i = 0; i < 6; i++) {
-        //     double margin_ratio = 1.5 - 0.1 * i;
-        //     for (const auto &point : path) {
-        //         bool is_safe = true;
-        //         for (const auto &start_position: start_positions) {
-        //             for (const auto &obstacle : obstacles) {
-        //                 if (obstacle.type == ObstacleType::STATICOBSTACLE) {
-        //                     if (checkCollisionBetweenLineSegmentAndBox(obstacle,
-        //                                                                start_position, point,
-        //                                                                agent_radius, param.world_dimension)) {
-        //                         is_safe = false;
-        //                         break;
-        //                     }
-        //                 }
-        //             }
-
-        //             if (is_safe and distmap_obj != nullptr) {
-        //                 is_safe = castRay(start_position, point, agent_radius * margin_ratio);
-        //             }
-
-        //             if (not is_safe) {
-        //                 break;
-        //             }
-        //         }
-
-        //         if (is_safe) {
-        //             los_free_goal = point;
-        //         }
-        //         else {
-        //             break;
-        //         }
-        //     }
-
-        //     if((los_free_goal - current_position).norm() > 0.3){
-        //         break;
-        //     }
+        // octomap::point3d delta = los_free_goal - current_position;
+        // if(delta.norm() > param.goal_radius){
+        //     los_free_goal = current_position + delta.normalized() * param.goal_radius;
         // }
-
-        octomap::point3d delta = los_free_goal - current_position;
-        if(delta.norm() > param.goal_radius){
-            los_free_goal = current_position + delta.normalized() * param.goal_radius;
-        }
 
         return los_free_goal;
     }

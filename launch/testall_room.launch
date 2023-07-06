@@ -55,7 +55,7 @@
 
     <!-- Planner mode -->
     <param name="mode/planner" value="lsc" /> <!-- lsc, bvc, orca-->
-    <param name="mode/goal" value="prior_based" /> <!-- right_hand, prior_based-->
+    <param name="mode/goal" value="standard_los" /> <!-- right_hand, prior_based-->
 
     <!-- Obstacle prediction -->
     <param name="obs/size_prediction" value="true" />
@@ -76,7 +76,7 @@
     <param name="opt/N_constraint_segments" value="-1" />
 
     <!-- Deadlock -->
-    <param name="deadlock/velocity_threshold" value="0.1" />
+    <param name="deadlock/velocity_threshold" value="-0.1" />
     <param name="deadlock/seq_threshold" value="5" />
 
     <!-- Filter -->
