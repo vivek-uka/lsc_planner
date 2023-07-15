@@ -512,14 +512,9 @@ namespace DynamicPlanning{
         // agent.current_goal_position = agent.desired_goal_position;
         GridBasedPlanner grid_based_planner(distmap_obj, mission, param);
         grid_based_planner.octree_ptr = octree_ptr;
+        
         grid_path = grid_based_planner.plan(agent.current_state.position, agent.desired_goal_position,
                                             agent.id, agent.radius, agent.downwash);
-        if(grid_path.empty()) {
-            // A* without priority
-            grid_path = grid_based_planner.plan(agent.current_state.position, agent.desired_goal_position,
-                                                agent.id, agent.radius, agent.downwash,
-                                                obstacles);
-        }
 
         // Find los-free goal from end of the initial trajectory
         grid_los_goal = grid_based_planner.findLOSFreeGoal(agent.current_state.position,
@@ -1470,19 +1465,14 @@ namespace DynamicPlanning{
     void TrajPlanner::generateFeasibleSFC(){
         CorridorConstructor corridor_constructor(distmap_obj, mission, param);
 
-        // if(agent.current_state.velocity.norm() < param.deadlock_velocity_threshold)
-        //     agent.cnt_initialize_sfc++;
-        // else
-        //     agent.cnt_initialize_sfc = 0;
 
-        if(flag_initialize_sfc || agent.cnt_initialize_sfc > 5){
+        if(flag_initialize_sfc){
             Box box = corridor_constructor.expandBoxFromPoint(agent.current_state.position,
                                                               agent.current_goal_position,
-                                                              agent.radius);
+                                                              1.2*agent.radius);
             for(int m = 0; m < M; m++){
                 constraints.setSFC(m, box);
             }
-            agent.cnt_initialize_sfc = 0;
             flag_initialize_sfc = false;
         }
         else {
@@ -1495,7 +1485,7 @@ namespace DynamicPlanning{
             Box box_cand;
             box_cand = corridor_constructor.expandBoxFromPoint(traj_curr[M - 1][n],
                                                                agent.current_goal_position,
-                                                               agent.radius);
+                                                               1.2*agent.radius);
             
             //TODO: Note: Below code may cause infeasible optimization problem because the function
             //      "corridor_constructor.expandBoxFromPoint" does not guarantee that

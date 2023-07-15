@@ -374,8 +374,8 @@ namespace DynamicPlanning {
             float y2 = (path[i]).y();
             float z2 = (path[i]).z();
 
-            float radius_xy = 0.25;
-            float radius_z = 0.25;
+            float radius_xy = 0.1 + 0.12;
+            float radius_z = 0.1 + 0.12;
 
             float alpha = atan2(y2-y1, x2-x1);
             float beta = (x2 == x1) ? M_PI_2 : atan2((x2 - x1)/cos(alpha), z2 - z1);

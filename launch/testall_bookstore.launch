@@ -90,7 +90,7 @@
     <param name="orca/inflation_ratio" value="1.0" />
 
     <!-- Grid-based planner   -->
-    <param name="grid/resolution" value="0.15" />
+    <param name="grid/resolution" value="0.1" />
     <param name="grid/margin" value="0.2" />
 
     <!-- Goal -->
