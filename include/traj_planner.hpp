@@ -48,6 +48,7 @@
 namespace DynamicPlanning {
     class TrajPlanner {
     public:
+        int path_index = 0;
         octomap::OcTree* octree_ptr;
         TrajPlanner(int _agent_id, const ros::NodeHandle& _nh, const Param& _param, const Mission& _mission);
 

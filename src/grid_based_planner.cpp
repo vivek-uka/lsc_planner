@@ -363,7 +363,7 @@ namespace DynamicPlanning {
         start_positions.emplace_back(current_position);
 
 
-        for(int i = 0; i < path.size(); i++){
+        for(int i = path_index; i < path.size(); i++){
             bool visible = true;
             
             float x1 = current_position.x();
@@ -430,6 +430,7 @@ namespace DynamicPlanning {
             }
             if(visible){ 
                 los_free_goal = path[i]; 
+                path_index = i;
             }
         }
         

@@ -8,7 +8,7 @@ int main(int argc, char* argv[]) {
     dynamic_debugger.initialize();
 
     int planner_seq = 1;
-    bool publish_lsc_contruction = true;
+    bool publish_lsc_contruction = false;
     ros::Rate rate(50);
     ros::Duration wait_term(0.5);
     while (ros::ok()) {

@@ -509,18 +509,25 @@ namespace DynamicPlanning{
     }
 
     void TrajPlanner::goalPlanningWithStaticGoal() {
-        // agent.current_goal_position = agent.desired_goal_position;
+        // // agent.current_goal_position = agent.desired_goal_position;
         GridBasedPlanner grid_based_planner(distmap_obj, mission, param);
         grid_based_planner.octree_ptr = octree_ptr;
-        
-        grid_path = grid_based_planner.plan(agent.current_state.position, agent.desired_goal_position,
+         
+        // if(grid_path.empty()){
+            grid_path = grid_based_planner.plan(agent.current_state.position, agent.desired_goal_position,
                                             agent.id, agent.radius, agent.downwash);
+        // }
+        if(grid_path.empty())
+            ROS_INFO_STREAM("No grid path found");
+        grid_based_planner.path_index = 0;//path_index;
 
         // Find los-free goal from end of the initial trajectory
+        grid_based_planner.plan_result.path = grid_path;
         grid_los_goal = grid_based_planner.findLOSFreeGoal(agent.current_state.position,
                                                            agent.desired_goal_position,
                                                            obstacles,
                                                            agent.radius);
+        path_index = grid_based_planner.path_index;
 
         agent.current_goal_position = grid_los_goal;
     }

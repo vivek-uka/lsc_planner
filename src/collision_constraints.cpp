@@ -404,7 +404,7 @@ namespace DynamicPlanning{
         visualization_msgs::MarkerArray msg1 = convertLSCsToMarkerArrayMsg(obstacles, colors, agent_radius);
         visualization_msgs::MarkerArray msg2 = convertSFCsToMarkerArrayMsg(colors[agent_id], agent_radius);
         msg1.markers.insert(msg1.markers.end(), msg2.markers.begin(), msg2.markers.end());
-        return msg1;
+        return msg2; ;//msg1
     }
 
     visualization_msgs::MarkerArray CollisionConstraints::convertLSCsToMarkerArrayMsg (

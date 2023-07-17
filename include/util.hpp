@@ -1,6 +1,7 @@
 #ifndef LSC_PLANNER_UTIL_HPP
 #define LSC_PLANNER_UTIL_HPP
 
+#include <random>
 #include <sp_const.hpp>
 #include <polynomial.hpp>
 #include <dynamicEDT3D/dynamicEDTOctomap.h>
@@ -244,46 +245,52 @@ namespace DynamicPlanning {
         double h, f;
         int i;
 
+        std::mt19937 gen(0); // seed the generator
+        std::uniform_int_distribution<> distr(5, 255); // define the range
+
         color.resize(size);
         for (int idx = 0; idx < size; idx++) {
-            h = idx * 6 / (double) size;
-            i = (int) h;
-            f = h - i;
+            color[idx].r = distr(gen)/255.0;
+            color[idx].g = distr(gen)/255.0;
+            color[idx].b = distr(gen)/255.0;
+            // h = idx * 6 / (double) size;
+            // i = (int) h;
+            // f = h - i;
 
-            switch (i) {
-                case 0:
-                    color[idx].r = 1;
-                    color[idx].g = f;
-                    color[idx].b = 0;
-                    break;
-                case 1:
-                    color[idx].r = 1 - f;
-                    color[idx].g = 1;
-                    color[idx].b = 0;
-                    break;
-                case 2:
-                    color[idx].r = 0;
-                    color[idx].g = 1;
-                    color[idx].b = f;
-                    break;
-                case 3:
-                    color[idx].r = 0;
-                    color[idx].g = 1 - f;
-                    color[idx].b = 1;
-                    break;
-                case 4:
-                    color[idx].r = f;
-                    color[idx].g = 0;
-                    color[idx].b = 1;
-                    break;
-                case 5:
-                    color[idx].r = 1;
-                    color[idx].g = 0;
-                    color[idx].b = 1 - f;
-                    break;
-                default:
-                    break;
-            }
+            // switch (i) {
+            //     case 0:
+            //         color[idx].r = 1;
+            //         color[idx].g = f;
+            //         color[idx].b = 0;
+            //         break;
+            //     case 1:
+            //         color[idx].r = 1 - f;
+            //         color[idx].g = 1;
+            //         color[idx].b = 0;
+            //         break;
+            //     case 2:
+            //         color[idx].r = 0;
+            //         color[idx].g = 1;
+            //         color[idx].b = f;
+            //         break;
+            //     case 3:
+            //         color[idx].r = 0;
+            //         color[idx].g = 1 - f;
+            //         color[idx].b = 1;
+            //         break;
+            //     case 4:
+            //         color[idx].r = f;
+            //         color[idx].g = 0;
+            //         color[idx].b = 1;
+            //         break;
+            //     case 5:
+            //         color[idx].r = 1;
+            //         color[idx].g = 0;
+            //         color[idx].b = 1 - f;
+            //         break;
+            //     default:
+            //         break;
+            // }
         }
 
         return color;

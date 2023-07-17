@@ -79,6 +79,8 @@ namespace DynamicPlanning {
 
     class GridBasedPlanner {
     public:
+        PlanResult plan_result;
+        int path_index;
         octomap::OcTree* octree_ptr;
         GridBasedPlanner(const std::shared_ptr<DynamicEDTOctomap>& _distmap_obj,
                          const DynamicPlanning::Mission &_mission,
@@ -103,6 +105,7 @@ namespace DynamicPlanning {
                                          const std::vector<octomap::point3d>& additional_check_positions = {});
 
     private:
+        
         Mission mission;
         Param param;
         std::shared_ptr<DynamicEDTOctomap> distmap_obj;
@@ -111,7 +114,7 @@ namespace DynamicPlanning {
         GridMap grid_map;
         GridMission grid_mission;
 
-        PlanResult plan_result;
+        
 
         void updateGridInfo(const octomap::point3d& current_position, double agent_radius);
 

@@ -302,7 +302,7 @@ namespace DynamicPlanning{
             agents[qi]->setObstacles(msg_obstacles);
             agents[qi]->setObsPrevTrajs(obs_prev_trajs);
             agents[qi]->updatePlannerState(planner_state);
-
+            
             if(mission_changed){
                 agents[qi]->setStart(mission.agents[qi].start_position);
                 agents[qi]->setDesiredGoal(mission.agents[qi].desired_goal_position);
@@ -321,6 +321,7 @@ namespace DynamicPlanning{
         // Sequential planning
         PlanningReport result;
         for(int qi = 0; qi < mission.qn; qi++){
+            
             result = agents[qi]->plan(sim_current_time);
             if(result == PlanningReport::QPFAILED){
                 return false;
@@ -348,9 +349,9 @@ namespace DynamicPlanning{
         }
         obstacle_generator.publish();
         publishAgentState();
-        if(param.multisim_experiment){
+        // if(param.multisim_experiment){
             publishDesiredTrajs();
-        }
+        // }
 
         publishGridMap();
     }
@@ -738,10 +739,10 @@ namespace DynamicPlanning{
         marker.header.frame_id = param.world_frame_id;
         marker.type = visualization_msgs::Marker::SPHERE;
         marker.action = visualization_msgs::Marker::ADD;
-
+        marker.ns = "Ellipse";
         for(int qi = 0; qi < mission.qn; qi++) {
             marker.color = mission.color[qi];
-            marker.color.a = 0.3;
+            marker.color.a = 0.5;
 
             marker.scale.x = 2 * mission.agents[qi].radius;
             marker.scale.y = 2 * mission.agents[qi].radius;
@@ -758,7 +759,7 @@ namespace DynamicPlanning{
         marker = visualization_msgs :: Marker();
         marker.header.frame_id = param.world_frame_id;
         marker.action = visualization_msgs::Marker::ADD;
-
+        marker.ns = "Crazyflie";
         for(int qi = 0; qi < mission.qn; qi++) {
             marker.type = marker.MESH_RESOURCE;
             marker.mesh_use_embedded_materials = true;
@@ -960,7 +961,7 @@ namespace DynamicPlanning{
             marker.action = visualization_msgs::Marker::ADD;
             marker.ns = std::to_string(qi);
             marker.id = qi;
-            marker.scale.x = 0.05;
+            marker.scale.x = 0.1;
             marker.color = mission.color[qi];
             marker.color.a = 0.5;
             marker.pose.orientation = defaultQuaternion();
