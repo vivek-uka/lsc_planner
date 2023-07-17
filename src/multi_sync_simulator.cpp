@@ -754,6 +754,29 @@ namespace DynamicPlanning{
 
             msg_collision_model.markers.emplace_back(marker);
         }
+
+        marker = visualization_msgs :: Marker();
+        marker.header.frame_id = param.world_frame_id;
+        marker.action = visualization_msgs::Marker::ADD;
+
+        for(int qi = 0; qi < mission.qn; qi++) {
+            marker.type = marker.MESH_RESOURCE;
+            marker.mesh_use_embedded_materials = true;
+            marker.mesh_resource = "package://lsc_planner/crazyflie/meshes/crazyflie.dae";
+            marker.scale.x = 1.0;
+            marker.scale.y = 1.0;
+            marker.scale.z = 1.0;
+            marker.color.a = 1.0;
+
+            marker.id = qi + mission.qn;
+            dynamic_msgs::State current_state = agents[qi]->getCurrentStateMsg();
+            marker.pose.position = current_state.pose.position;
+            marker.pose.position.x += -0.015;
+            marker.pose.orientation = defaultQuaternion();
+
+            msg_collision_model.markers.emplace_back(marker);
+        }
+
         pub_collision_model.publish(msg_collision_model);
     }
 

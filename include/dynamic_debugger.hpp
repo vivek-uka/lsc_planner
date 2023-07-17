@@ -387,6 +387,7 @@ private:
 
             // Obstacle collision model
             msg_rsfc_vis.markers.emplace_back(convertCollisionModelToMarker(obs_position, agent_radius, obs_id));
+            
         }
 
         return msg_rsfc_vis;
