@@ -225,6 +225,11 @@ Visualization Manager:
         2: true
         3: true
         4: true
+        5: true
+        6: true
+        7: true
+        8: true
+        9: true
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
@@ -245,6 +250,11 @@ Visualization Manager:
         2: true
         3: true
         4: true
+        5: true
+        6: true
+        7: true
+        8: true
+        9: true
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
@@ -418,21 +428,26 @@ Visualization Manager:
   Value: true
   Views:
     Current:
-      Angle: 0
-      Class: rviz/TopDownOrtho
+      Class: rviz/XYOrbit
+      Distance: 10
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
+      Focal Point:
+        X: 0
+        Y: 0
+        Z: 0
+      Focal Shape Fixed Size: true
+      Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Scale: 135.5234832763672
+      Pitch: 1.4503976106643677
       Target Frame: <Fixed Frame>
-      Value: TopDownOrtho (rviz)
-      X: -0.30441275238990784
-      Y: -0.0471530556678772
+      Value: XYOrbit (rviz)
+      Yaw: 5.09358024597168
     Saved: ~
 Window Geometry:
   Displays:
