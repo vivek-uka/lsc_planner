@@ -603,7 +603,7 @@ namespace DynamicPlanning{
         if(print_description){
             result_csv_out << "start_time,total_flight_time,total_flight_distance,is_collided,safety_ratio_agent,"
                            << "average_planning_time,min_planning_time,max_planning_time,"
-                           << "initial_traj_planning_time,obstacle_prediction_time,goal_planning_time,"
+                           << "initial_traj_planning_time,safety_ratio_obs,goal_planning_time,"
                            << "lsc_generation_time,sfc_generation_time,traj_optimization_time,"
                            << "mission_file_name,world_file_name,planner_mode,prediction_mode,initial_traj_mode,"
                            << "slack_mode,goal_mode,world_dimension,dt,horizon,N_constraint_segments\n";
@@ -617,7 +617,7 @@ namespace DynamicPlanning{
                        << planning_time.total_planning_time.min << ","
                        << planning_time.total_planning_time.max << ","
                        << planning_time.initial_traj_planning_time.average << ","
-                       << planning_time.obstacle_prediction_time.average << ","
+                       << safety_ratio_obs << ","
                        << planning_time.goal_planning_time.average << ","
                        << planning_time.lsc_generation_time.average << ","
                        << planning_time.sfc_generation_time.average << ","
