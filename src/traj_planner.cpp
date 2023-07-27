@@ -1582,6 +1582,7 @@ namespace DynamicPlanning{
                     bool check1 = sfc.box.isPointInBox(control_point);
                     if(not check1){
                         ROS_ERROR("[TrajPlanner] SFC constraint is not feasible.");
+                        stop_mission = true;
                     }
                 }
                 for(int oi = 0; oi < N_obs; oi++){
@@ -1591,6 +1592,7 @@ namespace DynamicPlanning{
                         bool check2 = margin > 0;
                         if(not check2){
                             ROS_ERROR("[TrajPlanner] LSC constraint is not feasible.");
+                            stop_mission = true;
                         }
                     }
                 }

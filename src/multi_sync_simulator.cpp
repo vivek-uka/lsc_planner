@@ -129,7 +129,8 @@ namespace DynamicPlanning{
             if (not success) {
                 break;
             }
-
+            if(is_collided)
+                break;
             // Publish planning result
             publish();
 
