@@ -327,6 +327,7 @@ namespace DynamicPlanning{
             if(result == PlanningReport::QPFAILED){
                 return false;
             }
+            
         }
 
         // save planning result
@@ -478,7 +479,7 @@ namespace DynamicPlanning{
                                                                                                << current_safety_ratio_agent);
                     is_collided = true;
                 }
-
+                
                 double current_safety_margin_obs = SP_INFINITY;
                 for (int oi = 0; oi < mission.on; oi++) {
                     dynamic_msgs::Obstacle obstacle = obstacle_generator.getObstacle(oi);
