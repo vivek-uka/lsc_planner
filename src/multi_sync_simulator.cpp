@@ -81,6 +81,7 @@ namespace DynamicPlanning{
     }
 
     void MultiSyncSimulator::run() {
+        ROS_INFO_STREAM("Starting exp");
         // Main Loop
         for (int iter = 0;
              (iter < param.multisim_max_planner_iteration or param.multisim_experiment) and ros::ok(); iter++) {
@@ -478,6 +479,10 @@ namespace DynamicPlanning{
                                                                                                << "), safety_ratio:"
                                                                                                << current_safety_ratio_agent);
                     is_collided = true;
+                }
+                if(agents[qi]->stop_mission){
+                    is_collided = true;
+                    ROS_INFO_STREAM("NOT FEASIBILE");
                 }
                 
                 double current_safety_margin_obs = SP_INFINITY;
